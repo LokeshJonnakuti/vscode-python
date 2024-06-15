@@ -7,6 +7,7 @@ import pathlib
 import subprocess
 import sys
 from typing import Optional, Sequence, Union
+from security import safe_command
 
 CONDA_ENV_NAME = ".conda"
 CWD = pathlib.Path.cwd()
@@ -58,7 +59,7 @@ def conda_env_exists(name: Union[str, pathlib.PurePath]) -> bool:
 def run_process(args: Sequence[str], error_message: str) -> None:
     try:
         print("Running: " + " ".join(args))
-        subprocess.run(args, cwd=os.getcwd(), check=True)
+        safe_command.run(subprocess.run, args, cwd=os.getcwd(), check=True)
     except subprocess.CalledProcessError:
         raise VenvError(error_message)
 

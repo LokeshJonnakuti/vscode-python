@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from security import safe_command
 
 
 linter_settings = {
@@ -43,9 +44,9 @@ def main():
         args = [sys.argv[3]] + linter_settings[linter]["args"] + sys.argv[4:]
 
     if hasattr(subprocess, "run"):
-        subprocess.run(args, encoding="utf-8", stdout=sys.stdout, stderr=sys.stderr)
+        safe_command.run(subprocess.run, args, encoding="utf-8", stdout=sys.stdout, stderr=sys.stderr)
     else:
-        subprocess.call(args, stdout=sys.stdout, stderr=sys.stderr)
+        safe_command.run(subprocess.call, args, stdout=sys.stdout, stderr=sys.stderr)
 
 
 if __name__ == "__main__":

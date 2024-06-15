@@ -12,6 +12,7 @@ import sys
 import threading
 import uuid
 from typing import Any, Dict, List, Optional, Tuple, TypedDict
+from security import safe_command
 
 
 TEST_DATA_PATH = pathlib.Path(__file__).parent / ".data"
@@ -194,7 +195,7 @@ def _listen_on_socket(listener: socket.socket, result: List[str], completed: thr
 
 
 def _run_test_code(proc_args: List[str], proc_env, proc_cwd: str, completed: threading.Event):
-    result = subprocess.run(proc_args, env=proc_env, cwd=proc_cwd)
+    result = safe_command.run(subprocess.run, proc_args, env=proc_env, cwd=proc_cwd)
     completed.set()
     return result
 

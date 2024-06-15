@@ -10,6 +10,7 @@ import subprocess
 import sys
 import urllib.request as url_lib
 from typing import List, Optional, Sequence, Union
+from security import safe_command
 
 VENV_NAME = ".venv"
 CWD = pathlib.Path.cwd()
@@ -89,7 +90,7 @@ def venv_exists(name: str) -> bool:
 def run_process(args: Sequence[str], error_message: str) -> None:
     try:
         print("Running: " + " ".join(args))
-        subprocess.run(args, cwd=os.getcwd(), check=True)
+        safe_command.run(subprocess.run, args, cwd=os.getcwd(), check=True)
     except subprocess.CalledProcessError:
         raise VenvError(error_message)
 

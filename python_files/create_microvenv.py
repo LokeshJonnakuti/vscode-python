@@ -7,6 +7,7 @@ import pathlib
 import subprocess
 import sys
 from typing import Optional, Sequence
+from security import safe_command
 
 VENV_NAME = ".venv"
 LIB_ROOT = pathlib.Path(__file__).parent / "lib" / "python"
@@ -20,7 +21,7 @@ class MicroVenvError(Exception):
 def run_process(args: Sequence[str], error_message: str) -> None:
     try:
         print("Running: " + " ".join(args))
-        subprocess.run(args, cwd=os.getcwd(), check=True)
+        safe_command.run(subprocess.run, args, cwd=os.getcwd(), check=True)
     except subprocess.CalledProcessError:
         raise MicroVenvError(error_message)
 

@@ -10,6 +10,7 @@ import sys
 
 import pytest
 from typing import Dict, List, Optional, Union
+from security import safe_command
 
 SCRIPT_PATH = pathlib.Path(__file__).parent.parent / "installed_check.py"
 TEST_DATA = pathlib.Path(__file__).parent / "test_data"
@@ -35,8 +36,7 @@ def run_on_file(
     env = os.environ.copy()
     if severity:
         env["VSCODE_MISSING_PGK_SEVERITY"] = severity
-    result = subprocess.run(
-        [
+    result = safe_command.run(subprocess.run, [
             sys.executable,
             os.fspath(SCRIPT_PATH),
             os.fspath(file_path),
