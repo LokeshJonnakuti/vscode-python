@@ -14,7 +14,7 @@ def process_rpc_json(data: str) -> List[str]:
     length: int = 0
 
     while True:
-        line: str = str_stream.readline()
+        line: str = str_stream.readline(5_000_000)
         if CONTENT_LENGTH.lower() in line.lower():
             length = int(line[len(CONTENT_LENGTH) :])
             break
@@ -23,7 +23,7 @@ def process_rpc_json(data: str) -> List[str]:
             raise ValueError("Header does not contain Content-Length")
 
     while True:
-        line: str = str_stream.readline()
+        line: str = str_stream.readline(5_000_000)
         if not line or line.isspace():
             break
 
